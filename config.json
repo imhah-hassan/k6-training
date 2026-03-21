@@ -1,0 +1,16 @@
+{
+  "local": {
+    "baseUrl": "http://172.19.48.1:8200",
+    "host": "172.19.48.1:8200",
+    "username": "Admin",
+    "password": "Orangehrm$2026",
+    "vus": 1
+  },
+  "prod": {
+    "baseUrl": "https://opensource-demo.orangehrmlive.com",
+    "host": "opensource-demo.orangehrmlive.com",
+    "username": "Admin",
+    "password": "admin123",
+    "vus": 1
+  }
+}
