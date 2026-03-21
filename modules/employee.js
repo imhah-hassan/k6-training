@@ -459,7 +459,7 @@ export function viewPimModule() {
     )
   });
 }
-export function addEmployee() {
+export function addEmployee(employee){
   let response;
   let empNumber = null;
   group('03-Add Employee - /pim/addEmployee', function () {
@@ -555,7 +555,7 @@ export function addEmployee() {
     );
     response = http.post(
       `${BASE_URL}/web/index.php/api/v2/pim/employees`,
-       `{"firstName":"K6_${empId}","middleName":"","lastName":"Training_${empId}","empPicture":null,"employeeId":"${empId}"}`,
+       `{"firstName":"${employee.firstName}","middleName":"","lastName":"${employee.lastName}","empPicture":null,"employeeId":"${employee.employeeId}"}`,
       {
         headers: {
           Host: HOST,
@@ -766,7 +766,7 @@ export function addEmployee() {
     );
     response = http.put(
       `${BASE_URL}/web/index.php/api/v2/pim/employees/${empNumber}/personal-details`,
-      `{"lastName":"Training_${empId}","firstName":"K6_${empId}","middleName":"","employeeId":"${empId}","otherId":"","drivingLicenseNo":"","drivingLicenseExpiredDate":null,"gender":"1","maritalStatus":"Single","birthday":"1986-02-11","nationalityId":64}`,
+      `{"lastName":"${employee.lastName}","firstName":"${employee.firstName}","middleName":"","employeeId":"${employee.employeeId}","otherId":"","drivingLicenseNo":"","drivingLicenseExpiredDate":null,"gender":"1","maritalStatus":"Single","birthday":"1986-02-11","nationalityId":64}`,
       {
         headers: {
           Host: HOST,

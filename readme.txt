@@ -28,6 +28,13 @@ SET K6_WEB_DASHBOARD=true
 k6 run -–duration 5m scripts/test.js
 open http://localhost:5665/ui/?endpoint=/
 
+# Shared data ; generate json fake data
+npm install --save-dev @faker-js/faker
+npm install --save-dev @types/faker
+
+cd data 
+node generate-data.js
+
 
 
 
