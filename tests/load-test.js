@@ -1,4 +1,3 @@
-import { sleep } from 'k6'
 import { SharedArray } from 'k6/data';
 import { login, viewPimModule, addEmployee, employeeContactDetails, deleteEmployee, logout } from '../modules/employee.js'
 
@@ -9,21 +8,32 @@ const accountData = new SharedArray('employees', function () {
     return data; 
 });
 
-
 export const options = {
   scenarios: {
     login_logout: {
       executor: 'constant-vus',
-      vus: 1,             // 90% de 10 VUs au total
-      duration: '5m',
+      vus: 15,
+      duration: '10m',
       exec: 'vu_login_logout',
     },
-    add_employe: {
+    add_employee: {
       executor: 'constant-vus',
-      vus: 1,            // 10% de 10 VUs au total
-      duration: '5m',
+      vus: 5,
+      duration: '10m',
       exec: 'vu_add_employee',
     },
+  },
+  
+  // Objectifs de performance (SLA)
+  thresholds: {
+    // 1. 95% des requêtes de CRÉATION doivent être sous 5 s
+    'http_req_duration{scenario:add_employee}': ['p(95)<5000'],
+
+    // 2. Le scénario de Login peut être un peu plus lent (10s)
+    'http_req_duration{scenario:login_logout}': ['p(95)<10000'],
+
+    // 3. Critère de santé global : moins de 1% d'erreurs HTTP (4xx ou 5xx) sur tout le test
+    'http_req_failed': ['rate<0.01'], 
   },
 };
 
@@ -35,7 +45,7 @@ export function vu_login_logout() {
 
 export function vu_add_employee() {
   // 2. Sélection de la donnée
-  // On utilise le modulo (%) pour boucler sur le fichier si on a plus d'itérations que de comptes
+  // Modulo (%) pour boucler sur le fichier si on a plus d'itérations que de comptes
   const currentIndex = __ITER % accountData.length;
   const employee = accountData[currentIndex];
 
@@ -48,4 +58,5 @@ export function vu_add_employee() {
   employeeContactDetails(empNumber);
   logout();
 }
+
 

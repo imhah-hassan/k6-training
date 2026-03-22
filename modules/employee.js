@@ -41,7 +41,7 @@ export function login() {
     });
     const csrfMatch = response.body.match(/:token="&quot;(.*)&quot;/);
     const token = csrfMatch ? csrfMatch[1] : null;
-    console.log ("Token   ", token);
+    // console.log ("Token   ", token);
     response = http.get(`${BASE_URL}/web/index.php/auth/login`, {
       headers: {
         Host: HOST,
@@ -193,7 +193,7 @@ export function login() {
         },
       }
     );
-    console.log ("04 status : ", response.status);
+    // console.log ("04 status : ", response.status);
     check(response, {
     '04 status 200': (r) => r.status === 200,
     });
@@ -571,7 +571,7 @@ export function addEmployee(employee){
         },
       }
     );
-    console.log ("Add employees : ", response.json());
+    // console.log ("Add employees : ", response.json());
     check(response, {
       'Add Employee status 200':        (r) => r.status === 200,
       'has data array':    (r) => r.json('data') !== null,
@@ -1375,7 +1375,7 @@ export function employeeContactDetails(empNumber) {
         },
       }
     );
-    console.log(`Contact details update response status: ${response.status}`);
+    // console.log(`Contact details update response status: ${response.status}`);
     check(response, {
     'Contact details status 200': (r) => r.status === 200,
     });
@@ -1613,7 +1613,7 @@ export function logout() {
         Connection: 'keep-alive',
       },
     });
-    console.log ("10 Logout : ", response.status);
+    // console.log ("10 Logout : ", response.status);
     check(response, {
      '10 status 200': (r) => r.status === 200,
     });

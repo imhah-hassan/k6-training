@@ -1,7 +1,7 @@
 services:
   mariadb:
     image: mariadb:10.6
-    container_name: orange_db
+    container_name: orangehrm_db
     restart: unless-stopped
     deploy:
       resources:
@@ -18,10 +18,10 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
-  # Accès Admin pwd Orangehrm$2026
+  # Acces Admin pwd Orangehrm$2026
   orangehrm:
     image: orangehrm/orangehrm:5.8
-    container_name: orangehrm
+    container_name: orangehrm_app
     restart: unless-stopped
     ports:
       - "8200:80"
@@ -50,9 +50,10 @@ services:
       - INFLUXDB_DB=orange_metrics
       - INFLUXDB_ADMIN_USER=admin
       - INFLUXDB_ADMIN_PASSWORD=InfluxDB$2026
-      - INFLUXDB_HTTP_AUTH_ENABLED=false # Désactivé pour simplifier les tests k6 au début
+      - INFLUXDB_HTTP_AUTH_ENABLED=false # Desactive pour simplifier les tests k6 au debut
     volumes:
-      - influxdb_data:/var/lib/influxdb2
+      - influxdb_data:/var/lib/influxdb
+
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
@@ -65,9 +66,22 @@ services:
       - influxdb
     volumes:
       - grafana_data:/var/lib/grafana
+
+  # --- AJOUT DE TELEGRAF POUR LE MONITORING ---
+  telegraf:
+    image: telegraf:latest
+    container_name: telegraf
+    user: "0:0"
+    privileged: true
+    restart: unless-stopped
+    depends_on:
+      - influxdb
+      - mariadb
+    volumes:
+      - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro # Permet de monitorer l'usage CPU/RAM des conteneurs
+
 volumes:
   mariadb_data:
   influxdb_data:
   grafana_data:
-
-  
