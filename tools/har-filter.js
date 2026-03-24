@@ -25,7 +25,7 @@ const path = require('path');
       }
       
       // GARDE : OrangeHRM + localhost + API typiques
-      if (url.includes('orangehrm')) {
+      if (url.includes('localhost') ) {
         return true;
       }
       

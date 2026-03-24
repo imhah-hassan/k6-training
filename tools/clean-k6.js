@@ -6,7 +6,7 @@ if (!fileName) {
     process.exit(1);
 }
 
-const targetDomain = "https://opensource-demo.orangehrmlive.com";
+const targetDomain = "http://localhost:9100"; 
 let lines = fs.readFileSync(fileName, 'utf8').split('\n');
 
 let cleanedLines = lines.map(line => {
