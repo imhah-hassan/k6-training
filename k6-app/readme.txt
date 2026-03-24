@@ -6,8 +6,8 @@ C'est sûr pour local et évite les soucis de socket
 1) Construire et lancer l'application + Redis
 docker compose up -d --build
 
-2) Verifier les logs de l'API
-docker compose logs -f api
+2) Verifier les logs de telegraf
+docker compose logs -f telegraf
 
 3) Arreter les conteneurs
 docker compose down
@@ -18,7 +18,9 @@ docker compose down -v
 docker compose up -d --force-recreate telegraf
 docker compose logs -f telegraf
 
+sudo usermod -aG docker telegraf
 
+docker exec -it influxdb influx
 ## influxdb
 -- 1. See if your database exists
 SHOW DATABASES
